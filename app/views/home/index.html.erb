@@ -1,0 +1,26 @@
+<div class='container'>
+  <div class='row'>
+    <div class='col-md-9'>
+      <%= month_calendar events: @meetings do |date, meetings| %>
+      <%= date %>
+      <% meetings.each do |meeting| %>
+      <div>
+        <%= link_to meeting.name, meeting_path(meeting) %>
+      </div>
+      <% end %>
+      <% end %>
+    </div>
+    <div class='col-md-3'>
+      <h3>Out of Office</h3>
+      <% @meetings.each do |meeting| %>
+      <strong>
+        <%= meeting.start_time.strftime '%B %d ' %>
+        -
+        <%= meeting.end_time.strftime '%B %d' %></strong>
+      <br>
+      <%= link_to "#{meeting.name}  -  #{meeting.reason}", meeting_path(meeting) %>
+      <br>
+      <% end %>
+    </div>
+  </div>
+</div>

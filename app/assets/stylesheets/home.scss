@@ -1,0 +1,61 @@
+// Place all the styles related to the home controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+.center {
+  text-align: center;
+}
+
+.buttonposition {
+  margin-bottom: 10px;
+  padding-bottom: 10px;
+}
+
+.jumbotron {
+  background-color:#70468C !important;
+  color:#ffa540 !important;
+}
+
+.lsnacho {
+  color: #ff3900;
+}
+
+.lssherbet {
+  color: #ffa540
+}
+
+.lspurple {
+  color: #70468C;
+}
+.simple-calendar {
+  .day {
+    text-align: center;
+  }
+
+  .wday-0 {}
+  .wday-1 {}
+  .wday-2 {}
+  .wday-3 {}
+  .wday-4 {}
+  .wday-5 {}
+  .wday-6 {}
+
+  .today {
+    text-align: center;
+    font-weight: bold;
+  }
+  .past {}
+  .future {}
+
+  .start-date {}
+
+  .prev-month {}
+  .next-month { }
+  .current-month {
+    text-align: center;
+  }
+
+  .has-events {}
+  .center {
+    text-align: center;
+  }
+}

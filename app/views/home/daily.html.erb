@@ -1,0 +1,16 @@
+<div class='container'>
+  <%= calendar number_of_days: 1, events: @meetings do |date, meetings|  %>
+  <%= date %>
+
+  <% meetings.each do |meeting| %>
+  <div>
+    <strong>
+      <%= meeting.start_time.strftime '%B %d ' %>
+      -
+      <%= meeting.end_time.strftime '%B %d' %></strong>
+    <br>
+    <%= link_to "#{meeting.name}  -  #{meeting.reason}", meeting_path(meeting) %>
+  </div>
+  <% end %>
+  <% end %>
+</div>
