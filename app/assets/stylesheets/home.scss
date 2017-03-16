@@ -1,6 +1,7 @@
 // Place all the styles related to the home controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
 .center {
   text-align: center;
 }
@@ -27,6 +28,11 @@
   color: #70468C;
 }
 .simple-calendar {
+  tr {
+      width:60px !important;
+      height:60px !important;
+      overflow: auto;
+  }
   .day {
     text-align: center;
   }
@@ -51,11 +57,11 @@
   .prev-month {}
   .next-month { }
   .current-month {
-    text-align: center;
   }
 
   .has-events {}
   .center {
     text-align: center;
   }
+
 }

@@ -1,4 +1,5 @@
 class MeetingsController < ApplicationController
+  before_action :authorize_user, except: [:index, :show, :new, :create]
   def index
     @meetings = Meeting.all
   end
@@ -16,21 +17,19 @@ class MeetingsController < ApplicationController
   end
 
   def create
-    start_time = DateTime.new(params[:meeting]['start_time(1i)'].to_i,
-                              params[:meeting]['start_time(2i)'].to_i,
-                              params[:meeting]['start_time(3i)'].to_i,
-                              params[:meeting]['start_time(4i)'].to_i,
-                              params[:meeting]['start_time(5i)'].to_i)
-    end_time = DateTime.new(params[:meeting]['end_time(1i)'].to_i,
-                            params[:meeting]['end_time(2i)'].to_i,
-                            params[:meeting]['end_time(3i)'].to_i,
-                            params[:meeting]['end_time(4i)'].to_i,
-                            params[:meeting]['end_time(5i)'].to_i)
-    @meeting = Meeting.new
-    @meeting.name = params[:meeting][:name]
-    @meeting.reason = params[:meeting][:reason]
-    @meeting.start_time = start_time
-    @meeting.end_time = end_time
+    params[:meeting][:start_time] = DateTime.new(params[:meeting]['start_time(1i)'].to_i,
+                                                 params[:meeting]['start_time(2i)'].to_i,
+                                                 params[:meeting]['start_time(3i)'].to_i,
+                                                 params[:meeting]['start_time(4i)'].to_i,
+                                                 params[:meeting]['start_time(5i)'].to_i)
+    params[:meeting][:end_time] = DateTime.new(params[:meeting]['end_time(1i)'].to_i,
+                                               params[:meeting]['end_time(2i)'].to_i,
+                                               params[:meeting]['end_time(3i)'].to_i,
+                                               params[:meeting]['end_time(4i)'].to_i,
+                                               params[:meeting]['end_time(5i)'].to_i)
+
+    @meeting = current_user.meetings.build(meeting_params)
+    @meeting.name = current_user.full_name
 
     if @meeting.save
       flash[:notice] = 'Out of office event was saved.'
@@ -48,22 +47,18 @@ class MeetingsController < ApplicationController
   def update
     @meeting = Meeting.find(params[:id])
 
-    start_time = DateTime.new(params[:meeting]['start_time(1i)'].to_i,
-                              params[:meeting]['start_time(2i)'].to_i,
-                              params[:meeting]['start_time(3i)'].to_i,
-                              params[:meeting]['start_time(4i)'].to_i,
-                              params[:meeting]['start_time(5i)'].to_i)
-    end_time = DateTime.new(params[:meeting]['end_time(1i)'].to_i,
-                            params[:meeting]['end_time(2i)'].to_i,
-                            params[:meeting]['end_time(3i)'].to_i,
-                            params[:meeting]['end_time(4i)'].to_i,
-                            params[:meeting]['end_time(5i)'].to_i)
-    @meeting.name = params[:meeting][:name]
-    @meeting.reason = params[:meeting][:reason]
-    @meeting.start_time = start_time
-    @meeting.end_time = end_time
+    params[:meeting][:start_time] = DateTime.new(params[:meeting]['start_time(1i)'].to_i,
+                                                 params[:meeting]['start_time(2i)'].to_i,
+                                                 params[:meeting]['start_time(3i)'].to_i,
+                                                 params[:meeting]['start_time(4i)'].to_i,
+                                                 params[:meeting]['start_time(5i)'].to_i)
+    params[:meeting][:end_time] = DateTime.new(params[:meeting]['end_time(1i)'].to_i,
+                                               params[:meeting]['end_time(2i)'].to_i,
+                                               params[:meeting]['end_time(3i)'].to_i,
+                                               params[:meeting]['end_time(4i)'].to_i,
+                                               params[:meeting]['end_time(5i)'].to_i)
 
-    if @meeting.save
+    if @meeting.update(meeting_params)
       flash[:notice] = 'Out of office event was saved.'
       redirect_to @meeting
     else
@@ -80,6 +75,20 @@ class MeetingsController < ApplicationController
     else
       flash.now[:alert] = 'There was an error deleting the out of office event.'
       render :show
+    end
+  end
+
+  private
+
+  def meeting_params
+    params.require(:meeting).permit(:reason, :start_time, :end_time)
+  end
+
+  def authorize_user
+    @meeting = Meeting.find(params[:id])
+    unless @meeting.user == current_user || current_user.admin?
+      flash[:alert] = 'You must be the owner of the event or an admin to do that.'
+      redirect_to root_path
     end
   end
 end

@@ -2,7 +2,7 @@
   <div class='row'>
     <div class='col-md-9'>
       <%= month_calendar events: @meetings do |date, meetings| %>
-      <%= date %>
+      <%= link_to date.strftime('%d'), daily_path(:start_date => date) %>
       <% meetings.each do |meeting| %>
       <div>
         <%= link_to meeting.name, meeting_path(meeting) %>

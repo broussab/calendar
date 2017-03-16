@@ -4,9 +4,11 @@
     -
     <%= @meeting.reason %>
   </h1>
+  <% if @meeting.user == current_user || current_user.admin? %>
   <%= link_to "Edit", edit_meeting_path, class: 'btn btn-success' %>
   <%= link_to "Delete", @meeting, method: :delete, class: 'btn btn-danger', data: { confirm: "Are you sure you want to delete this out of office event?" } %>
   <br>
+  <% end %>
   <small>
     submitted
     <%= time_ago_in_words(@meeting.created_at) %>
