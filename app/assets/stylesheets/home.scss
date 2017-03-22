@@ -1,6 +1,13 @@
 // Place all the styles related to the home controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+.altheader {
+  background-color: #ffa540;
+  text-align: center;
+  border-radius: 5px;
+  color: white;
+  text-shadow: 2px 2px 4px #000000;
+}
 
 .center {
   text-align: center;
@@ -14,6 +21,7 @@
 .jumbotron {
   background-color:#70468C !important;
   color:#ffa540 !important;
+  text-shadow: 2px 2px 4px #000000;
 }
 
 .lsnacho {
@@ -27,16 +35,39 @@
 .lspurple {
   color: #70468C;
 }
+
 .simple-calendar {
-  tr {
-      width:60px !important;
-      height:60px !important;
-      overflow: auto;
-  }
+
   .day {
+    text-align:  center;
+  }
+
+  ._day_{
+    width:80px !important;
+    height:80px !important;
+    overflow-y: hidden;
     text-align: center;
   }
 
+._day_:hover {
+  overflow: auto;
+}
+._day_ p {
+  padding-right: 16px;
+}
+._day_:hover p {
+  padding-right: 0px;
+}
+
+::-webkit-scrollbar {
+    -webkit-appearance: none;
+    width: 5px;
+  }
+
+::-webkit-scrollbar-thumb {
+    border-radius: 2px;
+    background-color: #70468C;
+  }
   .wday-0 {}
   .wday-1 {}
   .wday-2 {}

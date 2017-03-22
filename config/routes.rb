@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   devise_for :users
   resources :meetings
+  resources :users, only: [:index, :show]
 
   get 'daily' => 'home#daily'
 

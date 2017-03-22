@@ -5,13 +5,13 @@
       <%= link_to date.strftime('%d'), daily_path(:start_date => date) %>
       <% meetings.each do |meeting| %>
       <div>
-        <%= link_to meeting.name, meeting_path(meeting) %>
+        <%= link_to meeting.user.partial_name, meeting_path(meeting) %>
       </div>
       <% end %>
       <% end %>
     </div>
     <div class='col-md-3'>
-      <h3>Out of Office</h3>
+      <h3 class='altheader'>Out of Office</h3>
       <% @meetings.each do |meeting| %>
       <strong>
         <%= meeting.start_time.strftime '%B %d ' %>

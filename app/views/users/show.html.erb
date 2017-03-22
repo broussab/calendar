@@ -1,0 +1,26 @@
+<div class="container">
+  <h1 class='header center'>
+    <%= @user.firstname %>
+    <%= @user.lastname %>
+  </h1>
+  <div class='center'>
+    <h4>Slack Handle:
+      <%= @user.slackhandle %>
+    </h4>
+    <h5>
+      <%= @user.email %></h5>
+  </div>
+  <div>
+    <h3 class='altheader center'>Out of Office Events</h3>
+    <% if @user.meetings.empty? %>
+    <h4 class='center'>**<%= @user.firstname %>
+      has no Out of Office events.**</h4>
+  <% else %>
+    <%= render partial: 'meetings/meeting', locals: {meetings: @meetings} %>
+    <% end %>
+  </div>
+  <br>
+  <% if current_user.admin? %>
+
+  <% end %>
+</div>

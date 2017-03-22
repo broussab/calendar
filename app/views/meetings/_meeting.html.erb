@@ -1,0 +1,19 @@
+<% meetings.each do |meeting| %>
+<div class='container'>
+  <div class='row'>
+    <div class='col-md-9'>
+      <ul>
+        <li>
+          <%= link_to "#{meeting.name}  -  #{meeting.reason}", meeting_path(meeting) %>
+        </li>
+        <div class="media-body">
+          <small>
+            submitted
+            <%= time_ago_in_words(meeting.created_at) %>
+            ago</small>
+        </div>
+      </ul>
+    </div>
+  </div>
+</div>
+<% end %>

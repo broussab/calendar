@@ -2,7 +2,7 @@
   <div class="calendar-heading">
     <%= link_to "New OOO Event", new_meeting_path, class: 'btn btn-success pull-right buttonposition' %>
     <h3><%= link_to t('simple_calendar.previous', default: '<<'), calendar.url_for_previous_view %>
-      <span class="calendar-title"><%= t('date.month_names')[start_date.month] %>
+      <span class="calendar-title header"><%= t('date.month_names')[start_date.month] %>
         <%= start_date.year %></span>
       <%= link_to t('simple_calendar.next', default: '>>'), calendar.url_for_next_view %></h3>
   </div>
@@ -24,7 +24,9 @@
         <% if defined?(Haml) && respond_to?(:block_is_haml?) && block_is_haml?(block) %>
         <% capture_haml(day, sorted_events.fetch(day, []), &block) %>
       <% else %>
-        <% block.call day, sorted_events.fetch(day, []) %>
+        <div class="_day_">
+          <% block.call day, sorted_events.fetch(day, []) %>
+        </div>
         <% end %>
         <% end %>
         <% end %>
