@@ -14,6 +14,13 @@ group :development do
   gem 'sqlite3'
 end
 
+group :development, :test do
+  gem 'rspec-rails', '~> 3.0'
+  gem 'rails-controller-testing'
+  gem 'factory_girl_rails', '~> 4.0'
+  gem 'shoulda'
+end
+
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'
 # Use Uglifier as compressor for JavaScript assets
@@ -29,3 +36,4 @@ gem 'simple_calendar', '~> 2.0'
 gem 'bootstrap-sass'
 gem 'devise'
 gem 'faker'
+gem 'slack-ruby-client'

@@ -16,9 +16,9 @@
     </div>
     <div class="field col-md-8">
       <%= f.label :slackhandle, "Slack Handle" %>
-      <em>(slack username beginning with @ char)"</em>
+      <em>(your slack username, please do enter the @ symbol in the text box)</em>
       <br/>
-      <%= f.text_field :slackhandle, autofocus: true %>
+      @<%= f.text_field :slackhandle, autofocus: true %>
     </div>
   </div>
   <div class="field">
