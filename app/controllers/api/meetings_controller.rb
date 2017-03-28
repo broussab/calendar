@@ -17,11 +17,19 @@ class API::MeetingsController < ApplicationController
     else
       @reason = params_array[0]
       start_time_arr = params_array[1].scan(/\d+|\w+/)
-      start_time_arr[3].to_i + 12 if start_time_arr[5].start_with?('p', 'P')
-      @start_time = DateTime.new(start_time_arr[2].to_i, start_time_arr[0].to_i, start_time_arr[1].to_i, start_time_arr[3].to_i, start_time_arr[4].to_i)
+      if start_time_arr[5].start_with?('p', 'P')
+        start_time_hour = start_time_arr[3].to_i + 12
+      else
+        start_time_hour = start_time_arr[3]
+      end
+      @start_time = DateTime.new(start_time_arr[2].to_i, start_time_arr[0].to_i, start_time_arr[1].to_i, start_time_hour.to_i, start_time_arr[4].to_i)
       end_time_arr = params_array[2].scan(/\d+|\w+/)
-      end_time_arr[3].to_i + 12 if end_time_arr[5].start_with?('p', 'P')
-      @end_time = DateTime.new(end_time_arr[2].to_i, end_time_arr[0].to_i, end_time_arr[1].to_i, end_time_arr[3].to_i, end_time_arr[4].to_i)
+      if end_time_arr[5].start_with?('p', 'P')
+        end_time_hour = end_time_arr[3].to_i + 12
+      else
+        end_time_hour = end_time_arr[3]
+      end
+      @end_time = DateTime.new(end_time_arr[2].to_i, end_time_arr[0].to_i, end_time_arr[1].to_i, end_time_hour.to_i, end_time_arr[4].to_i)
       @user = User.where("slackhandle = ?", params[:user_name].to_s).take!
       @meeting = @user.meetings.build(name: @user.full_name, reason: @reason, start_time: @start_time, end_time: @end_time)
 
