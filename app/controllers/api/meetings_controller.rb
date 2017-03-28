@@ -16,7 +16,6 @@ class API::MeetingsController < ApplicationController
       render json: { error: "You have not entered the parameters correctly. Please try again."}, status: :unprocessable_entity
     else
       @reason = params_array[0]
-
       start_time_arr = params_array[1].scan(/\d+|\w+/)
       if start_time_arr.length != 6
         render json: { error: "You have not entered the start time parameter correctly. Please try again."}, status: :unprocessable_entity
@@ -30,7 +29,7 @@ class API::MeetingsController < ApplicationController
       end
       end_time_arr = params_array[2].scan(/\d+|\w+/)
       if start_time_arr.length != 6
-        render json: { error: "You have not entered the start time parameter correctly. Please try again."}, status: :unprocessable_entity
+        render json: { error: "You have not entered the end time parameter correctly. Please try again."}, status: :unprocessable_entity
       else
         if end_time_arr[5].start_with?('p', 'P')
           end_time_hour = end_time_arr[3].to_i + 12
