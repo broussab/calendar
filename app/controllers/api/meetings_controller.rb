@@ -10,6 +10,18 @@ class API::MeetingsController < ApplicationController
   end
 
   def create
+    if params[:text].strip == "help"
+      render json: {
+        "attachments": [
+          {
+          "color":  "#70468C",
+          "title":  "Out of Office Calendar Help",
+          "title_link": "https://cryptic-woodland-68868.herokuapp.com/instructions",
+          "text": "Just enter /ooo [reason, start time, end time] and your event will automatically be added to the Out of Office Calendar! Make sure the parameters are separated by commas and the times are in the format: MM-DD-YYYY HH:MM am/pm. For example: /ooo WFH, 03-27-2017 8:00 am, 03-27-2017 5:00 pm "
+        }
+      ]
+    }
+  else
     params_array = params[:text].split(',')
 
     if params_array.length != 3
@@ -48,7 +60,7 @@ class API::MeetingsController < ApplicationController
         end
     end
   end
-
+end
 
   def preflight
     head 200
@@ -63,6 +75,7 @@ class API::MeetingsController < ApplicationController
                 "pretext": "Your new Out of Office Event has been created successfully!",
                 "title": "#{@meeting.name}  -  #{@meeting.reason}",
                 "title_link": "https://cryptic-woodland-68868.herokuapp.com",
+                "text": "#{@meeting.start_time.strftime '%I:%M %P'} - #{@meeting.end_time.strftime '%I:%M %P'}",
                 "image_url": "http://my-website.com/path/to/image.jpg",
                 "thumb_url": "http://example.com/path/to/thumb.png",
                 "footer": "Slack API",
