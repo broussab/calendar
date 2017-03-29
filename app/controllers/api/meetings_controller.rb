@@ -75,7 +75,7 @@ end
                 "pretext": "Your new Out of Office Event has been created successfully!",
                 "title": "#{@meeting.name}  -  #{@meeting.reason}",
                 "title_link": "https://cryptic-woodland-68868.herokuapp.com",
-                "text": "#{@meeting.start_time.strftime '%I:%M %P'} - #{@meeting.end_time.strftime '%I:%M %P'}",
+                "text": "#{@meeting.start_time.strftime '%B %d, %Y at %I:%M %P'} - #{@meeting.end_time.strftime '%B %d, %Y at %I:%M %P'}",
                 "image_url": "http://my-website.com/path/to/image.jpg",
                 "thumb_url": "http://example.com/path/to/thumb.png",
                 "footer": "Slack API",
