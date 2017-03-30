@@ -17,11 +17,67 @@ class API::MeetingsController < ApplicationController
           "color":  "#70468C",
           "title":  "Out of Office Calendar Help",
           "title_link": "https://cryptic-woodland-68868.herokuapp.com/instructions",
-          "text": "Just enter /ooo [reason, start time, end time] and your event will automatically be added to the Out of Office Calendar! Make sure the parameters are separated by commas and the times are in the format: MM-DD-YYYY HH:MM am/pm. For example: /ooo WFH, 03-27-2017 8:00 am, 03-27-2017 5:00 pm "
+          "text": "Just enter /ooo [reason, start time, end time] and your event will automatically be added to the Out of Office Calendar! Make sure the parameters are separated by commas and the times are in the format: MM-DD-YYYY HH:MM am/pm. For example: /ooo WFH, 03-27-2017 8:00 am, 03-27-2017 5:00 pm ",
+          "image_url": "http://my-website.com/path/to/image.jpg",
+          "thumb_url": "http://example.com/path/to/thumb.png",
+          "footer": "Slack API",
+          "footer_icon": "https://platform.slack-edge.com/img/default_application_icon.png"
         }
       ]
-    }
-  else
+    }, status: :ok
+
+    elsif params[:text].strip.start_with?("@")
+      @slack_name = params[:text].strip
+      @slack_name.slice!(0)
+      if User.exists?(:slackhandle => @slack_name)
+        @user = User.where("slackhandle = ?", @slack_name).take!
+        @meetings = @user.meetings.for_calendar(DateTime.now.beginning_of_day, DateTime.now.end_of_day)
+        if @meetings.empty?
+          render json: {
+            "attachments": [
+              {
+                "color":  "good",
+                "title":  "#{@user.full_name}",
+                "title_link": "https://cryptic-woodland-68868.herokuapp.com/",
+                "text": "Is In the Office Today!",
+                "image_url": "http://my-website.com/path/to/image.jpg",
+                "thumb_url": "http://example.com/path/to/thumb.png",
+                "footer": "Slack API",
+                "footer_icon": "https://platform.slack-edge.com/img/default_application_icon.png"
+              }
+            ]
+          }, status: :ok
+        else
+          render json: {
+            "attachments": [
+              {
+                "color":  "danger",
+                "title":  "#{@user.full_name}",
+                "title_link": "https://cryptic-woodland-68868.herokuapp.com/",
+                "text": "Is Scheduled to be Out of the Office Today.",
+                "image_url": "http://my-website.com/path/to/image.jpg",
+                "thumb_url": "http://example.com/path/to/thumb.png",
+                "footer": "Slack API",
+                "footer_icon": "https://platform.slack-edge.com/img/default_application_icon.png"
+              }
+            ]
+          }, status: :ok
+        end
+      else
+        render json: {
+          "attachments": [
+            {
+              "color":  "danger",
+              "text": "I'm sorry. That user does not exist in the Out of Office Calendar database.",
+              "image_url": "http://my-website.com/path/to/image.jpg",
+              "thumb_url": "http://example.com/path/to/thumb.png",
+              "footer": "Slack API",
+              "footer_icon": "https://platform.slack-edge.com/img/default_application_icon.png"
+            }
+          ]
+        }, status: :unprocessable_entity
+      end
+    else
     params_array = params[:text].split(',')
 
     if params_array.length != 3
