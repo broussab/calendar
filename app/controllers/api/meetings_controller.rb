@@ -10,21 +10,25 @@ class API::MeetingsController < ApplicationController
   end
 
   def create
+    puts '-'*30
+    puts parmas.to_h
+    puts '-'*30
+
     if params[:text].strip == "help"
       render json: {
         "attachments": [
           {
-          "color":  "#70468C",
-          "title":  "Out of Office Calendar Help",
-          "title_link": "https://cryptic-woodland-68868.herokuapp.com/instructions",
-          "text": "Just enter /ooo [reason, start time, end time] and your event will automatically be added to the Out of Office Calendar! Make sure the parameters are separated by commas and the times are in the format: MM-DD-YYYY HH:MM am/pm. For example: /ooo WFH, 03-27-2017 8:00 am, 03-27-2017 5:00 pm ",
-          "image_url": "http://my-website.com/path/to/image.jpg",
-          "thumb_url": "http://example.com/path/to/thumb.png",
-          "footer": "Slack API",
-          "footer_icon": "https://platform.slack-edge.com/img/default_application_icon.png"
-        }
-      ]
-    }, status: :ok
+            "color":  "#70468C",
+            "title":  "Out of Office Calendar Help",
+            "title_link": "https://cryptic-woodland-68868.herokuapp.com/instructions",
+            "text": "Just enter /ooo [reason, start time, end time] and your event will automatically be added to the Out of Office Calendar! Make sure the parameters are separated by commas and the times are in the format: MM-DD-YYYY HH:MM am/pm. For example: /ooo WFH, 03-27-2017 8:00 am, 03-27-2017 5:00 pm ",
+            "image_url": "http://my-website.com/path/to/image.jpg",
+            "thumb_url": "http://example.com/path/to/thumb.png",
+            "footer": "Slack API",
+            "footer_icon": "https://platform.slack-edge.com/img/default_application_icon.png"
+          }
+        ]
+      }, status: :ok
 
     elsif params[:text].strip.start_with?("@")
       @slack_name = params[:text].strip
@@ -97,7 +101,7 @@ class API::MeetingsController < ApplicationController
       end
       end_time_arr = params_array[2].scan(/\d+|\w+/)
       if start_time_arr.length != 6
-      messages("failure")
+        messages("failure")
       else
         if end_time_arr[5].start_with?('p', 'P')
           end_time_hour = end_time_arr[3].to_i + 12
@@ -126,33 +130,33 @@ end
     if status == "success"
       render json: {
         "attachments": [
-            {
-                "color": "#36a64f",
-                "pretext": "Your new Out of Office Event has been created successfully!",
-                "title": "#{@meeting.name}  -  #{@meeting.reason}",
-                "title_link": "https://cryptic-woodland-68868.herokuapp.com",
-                "text": "#{@meeting.start_time.strftime '%B %d, %Y at %I:%M %P'} - #{@meeting.end_time.strftime '%B %d, %Y at %I:%M %P'}",
-                "image_url": "http://my-website.com/path/to/image.jpg",
-                "thumb_url": "http://example.com/path/to/thumb.png",
-                "footer": "Slack API",
-                "footer_icon": "https://platform.slack-edge.com/img/default_application_icon.png"
-            }
+          {
+            "color": "#36a64f",
+            "pretext": "Your new Out of Office Event has been created successfully!",
+            "title": "#{@meeting.name}  -  #{@meeting.reason}",
+            "title_link": "https://cryptic-woodland-68868.herokuapp.com",
+            "text": "#{@meeting.start_time.strftime '%B %d, %Y at %I:%M %P'} - #{@meeting.end_time.strftime '%B %d, %Y at %I:%M %P'}",
+            "image_url": "http://my-website.com/path/to/image.jpg",
+            "thumb_url": "http://example.com/path/to/thumb.png",
+            "footer": "Slack API",
+            "footer_icon": "https://platform.slack-edge.com/img/default_application_icon.png"
+          }
         ]
       }, status: :created
     else
       render json: {
         "attachments":  [
           {
-              "color": "danger",
-              "pretext": "There was an error creating your Out of Office event. Check to see if your parameters are correct.",
-              "title": "Out of Office Calendar",
-              "title_link": "https://cryptic-woodland-68868.herokuapp.com",
-              "image_url": "http://my-website.com/path/to/image.jpg",
-              "thumb_url": "http://example.com/path/to/thumb.png",
-              "footer": "Slack API",
-              "footer_icon": "https://platform.slack-edge.com/img/default_application_icon.png"
+            "color": "danger",
+            "pretext": "There was an error creating your Out of Office event. Check to see if your parameters are correct.",
+            "title": "Out of Office Calendar",
+            "title_link": "https://cryptic-woodland-68868.herokuapp.com",
+            "image_url": "http://my-website.com/path/to/image.jpg",
+            "thumb_url": "http://example.com/path/to/thumb.png",
+            "footer": "Slack API",
+            "footer_icon": "https://platform.slack-edge.com/img/default_application_icon.png"
           }
-      ]
+        ]
       }, status: :unprocessable_entity
     end
   end

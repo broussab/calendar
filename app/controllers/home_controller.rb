@@ -13,7 +13,6 @@ class HomeController < ApplicationController
     start_date = date ? date.beginning_of_week : DateTime.now.at_beginning_of_week
     end_date = date ? date.end_of_week : DateTime.now.at_end_of_week
     @meetings = Meeting.for_calendar(start_date, end_date)
-    # raise @meetings.inspect
   end
 
   def daily
