@@ -15,18 +15,18 @@ class API::MeetingsController < ApplicationController
 
   def create
     text = params[:text].strip
-    response = if text == "help"
+    response = if text == 'help'
       HelpService.new.response
-    elsif text.start_with?"@"
+    elsif text.start_with?'@'
       TodayService.new(params).response
     else
       MeetingService.new(params).response
     end
 
     if response.good?
-      render json: response, status: :ok
+      render json: { attachments: [ response ] }, status: :ok
     else
-      render json: response, status: :unprocessable_entity
-    end      
+      render json: { attachments: [ response ] }, status: :unprocessable_entity
+    end
   end
 end

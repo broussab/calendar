@@ -1,86 +1,85 @@
 require 'rails_helper'
 
 RSpec.describe API::MeetingsController, type: :controller do
-
-  describe "Meetings API" do
-    it 'should create a meeting' do
-
-    user = User.create!(firstname: 'Alyssa',
+  let!(:user) do
+    FactoryGirl.create(:user, {
+      firstname: 'Alyssa',
       lastname: 'Broussard',
       slackhandle: 'alyssa',
       email:  'alybeic@gmail.com',
       password: 'password',
       password_confirmation: 'password'
-    )
+    })
+  end
 
-      params = {format: :json, :text => 'sick, 03-27-2017 8:00 Am, 03-27-2017 5:00 pm', :user_name => 'alyssa'}
+  let(:headers) do
+    { 'ORIGIN' => 'http://registered_application.com',
+      'ACCEPT' => 'application/json',
+      'CONTENT_TYPE' => 'application/json'}
+  end
 
-      post :create, params, {'ORIGIN' => 'http://registered_application.com', 'ACCEPT' => 'application/json', 'CONTENT_TYPE' => 'application/json'}
+  let(:params) do
+    { format: :json,
+      :text => 'a reason',
+      :user_name => 'alyssa' }
+  end
 
-      json = JSON.parse(response.body)
+  describe "adding a meeting" do
+    it 'should create a meeting' do
+      params[:text] = 'sick, 03-27-2017 8:00 AM, 03-27-2017 5:00 PM'
+      post :create, params: params, headers: headers
 
       expect(response).to be_success
 
-      expect(assigns(:meeting)).to eq Meeting.last
+      body = JSON.parse(response.body)
+      expect(body['attachments'][0]['title']).to eq("Alyssa Broussard  -  sick")
+      expect(body['attachments'][0]['text']).to eq("#{user.meetings.last.start_time.strftime '%B %d, %Y at %I:%M %P'} - #{user.meetings.last.end_time.strftime '%B %d, %Y at %I:%M %P'}")
     end
 
     it 'should return an error if the text param is not accurate' do
-      user = User.create!(firstname: 'Alyssa',
-        lastname: 'Broussard',
-        slackhandle: 'alyssa',
-        email:  'alybeic@gmail.com',
-        password: 'password',
-        password_confirmation: 'password'
-      )
+      params[:text] = 'sick 2017-03-27'
+      post :create, params: params, headers: headers
 
-        params = {format: :json, :text => 'sick 2017-03-27', :user_name => 'alyssa'}
-
-        post :create, params, {'ORIGIN' => 'http://registered_application.com', 'ACCEPT' => 'application/json', 'CONTENT_TYPE' => 'application/json'}
-
-        json = JSON.parse(response.body)
-
-        expect(response).to be_unprocessable
+      expect(response).to be_unprocessable
     end
+  end
 
+  describe 'getting help' do
     it 'should return the help message' do
-      params = {format: :json, :text => 'help'}
+      params[:text] = 'help'
+      post :create, params: params, headers: headers
 
-      post :create, params, {'ORIGIN' => 'http://registered_application.com', 'ACCEPT' => 'application/json', 'CONTENT_TYPE' => 'application/json'}
-
-      json = JSON.parse(response.body)
       expect(response).to be_success
+
+      body = JSON.parse(response.body)
+      expect(body['attachments'][0]['title']).to eq("Out of Office Calendar Help")
+      expect(body['attachments'][0]['text']).to eq("Just enter /ooo [reason, start time, end time] and your event will automatically be added to the Out of Office Calendar! Make sure the parameters are separated by commas and the times are in the format: MM-DD-YYYY HH:MM am/pm. For example: /ooo WFH, 03-27-2017 8:00 am, 03-27-2017 5:00 pm")
     end
+  end
 
-    it 'should return if the user is in/out' do
-      @user = User.create!(firstname: 'Alyssa',
-        lastname: 'Broussard',
-        slackhandle: 'alyssa',
-        email:  'alybeic@gmail.com',
-        password: 'password',
-        password_confirmation: 'password'
-      )
-
-      @meeting = Meeting.create!(name: 'Alyssa Broussard',
+  describe 'is a user in or out' do
+    let(:meeting) do
+      FactoryGirl.create(:meeting, {
+        name: 'Alyssa Broussard',
         reason: 'vacation',
         start_time: '2017-03-30 08:00:00',
         end_time: '2017-03-30 17:00:00',
-        user_id: @user.id
-      )
+        user: user
+      })
+    end
 
-      params = {format: :json, :text => '@alyssa'}
+    it 'should return if the user is in/out' do
+      params[:text] = '@alyssa'
+      post :create, params: params, headers: headers
 
-      post :create, params, {'ORIGIN' => 'http://registered_application.com', 'ACCEPT' => 'application/json', 'CONTENT_TYPE' => 'application/json'}
-
-      json = JSON.parse(response.body)
+      JSON.parse(response.body)
       expect(response).to be_success
     end
 
     it 'should return if the user does not exist' do
-      params = {format: :json, :text => '@test'}
-
-      post :create, params, {'ORIGIN' => 'http://registered_application.com', 'ACCEPT' => 'application/json', 'CONTENT_TYPE' => 'application/json'}
-
-      json = JSON.parse(response.body)
+      params[:text] = '@test'
+      post :create, params: params, headers: headers
+      JSON.parse(response.body)
       expect(response).to be_unprocessable
     end
   end
