@@ -13,7 +13,7 @@ RSpec.describe API::MeetingsController, type: :controller do
       password_confirmation: 'password'
     )
 
-      params = {format: :json, :text => 'sick, 03-27-2017 8:00 Am, 03-27-2017 5:00 pm', :user_name => 'alyssa'}
+      params = {format: :json, :text => 'sick, 03-27-2017 12:30 pm, 03-27-2017 5:00 pm', :user_name => 'alyssa'}
 
       post :create, params, {'ORIGIN' => 'http://registered_application.com', 'ACCEPT' => 'application/json', 'CONTENT_TYPE' => 'application/json'}
 

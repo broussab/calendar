@@ -84,28 +84,8 @@ class API::MeetingsController < ApplicationController
       messages("failure")
     else
       @reason = params_array[0]
-      start_time_arr = params_array[1].scan(/\d+|\w+/)
-      if start_time_arr.length != 6
-        messages("failure")
-      else
-        if start_time_arr[5].start_with?('p', 'P')
-          start_time_hour = start_time_arr[3].to_i + 12
-        else
-          start_time_hour = start_time_arr[3]
-        end
-        @start_time = DateTime.new(start_time_arr[2].to_i, start_time_arr[0].to_i, start_time_arr[1].to_i, start_time_hour.to_i, start_time_arr[4].to_i)
-      end
-      end_time_arr = params_array[2].scan(/\d+|\w+/)
-      if start_time_arr.length != 6
-      messages("failure")
-      else
-        if end_time_arr[5].start_with?('p', 'P')
-          end_time_hour = end_time_arr[3].to_i + 12
-        else
-          end_time_hour = end_time_arr[3]
-        end
-        @end_time = DateTime.new(end_time_arr[2].to_i, end_time_arr[0].to_i, end_time_arr[1].to_i, end_time_hour.to_i, end_time_arr[4].to_i)
-      end
+      @start_time = DateTime.strptime(params_array[1].strip, '%m-%d-%Y %H:%M %p').to_s
+      @end_time = DateTime.strptime(params_array[2].strip, '%m-%d-%Y %H:%M %p').to_s
       @user = User.where("slackhandle = ?", params[:user_name].to_s).take!
       @meeting = @user.meetings.build(name: @user.full_name, reason: @reason, start_time: @start_time, end_time: @end_time)
 
@@ -113,6 +93,7 @@ class API::MeetingsController < ApplicationController
           messages("success")
         else
           messages("failure")
+          render json: {errors: @meeting.errors}
         end
     end
   end
@@ -144,7 +125,7 @@ end
         "attachments":  [
           {
               "color": "danger",
-              "pretext": "There was an error creating your Out of Office event. Check to see if your parameters are correct.",
+              "pretext": "There was an error creating your Out of Office event.",
               "title": "Out of Office Calendar",
               "title_link": "https://cryptic-woodland-68868.herokuapp.com",
               "image_url": "http://my-website.com/path/to/image.jpg",
