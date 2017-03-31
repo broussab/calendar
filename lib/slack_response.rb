@@ -9,6 +9,7 @@ class SlackResponse
     @footer_icon = 'https://platform.slack-edge.com/img/default_application_icon.png'
     @title       = 'OOO Bot'
     @text        = 'This is a post'
+    @pretext     = 'OOO Bot'
 
     if params[:failed]
       @color = 'danger'

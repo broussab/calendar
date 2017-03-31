@@ -32,8 +32,7 @@ class MeetingService
     SlackResponse.new({
       failed: true,
       pretext: "There was an error creating your Out of Office event. Check to see if your parameters are correct.",
-      title: "Out of Office Calendar",
-      title_link: "https://cryptic-woodland-68868.herokuapp.com"
+      title: "Out of Office Calendar"
     })
   end
 
@@ -42,7 +41,6 @@ class MeetingService
     SlackResponse.new({
       pretext: "Your new Out of Office Event has been created successfully!",
       title: "#{meeting.name}  -  #{meeting.reason}",
-      title_link: "https://cryptic-woodland-68868.herokuapp.com",
       text: "#{meeting.start_time.strftime '%B %d, %Y at %I:%M %P'} - #{meeting.end_time.strftime '%B %d, %Y at %I:%M %P'}"
     })
   end
