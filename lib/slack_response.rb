@@ -11,12 +11,7 @@ class SlackResponse
     @title       = params[:title] || 'OOO Bot'
     @text        = params[:text] || 'This is a post'
     @pretext     = params[:pretext] || 'OOO Bot'
-
-    if params[:failed]
-      @color = 'danger'
-    else
-      @color = 'good'
-    end
+    @color = params[:failed] ? 'danger' : 'good'
   end
 
   def good?
