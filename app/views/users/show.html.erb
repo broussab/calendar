@@ -11,7 +11,7 @@
   </div>
   <div>
     <h3 class='altheader center'>Out of Office Events</h3>
-    <% if @user.meetings.empty? %>
+    <% if @meetings.empty? %>
     <h4 class='center'>**<%= @user.firstname %>
       has no Out of Office events.**</h4>
   <% else %>

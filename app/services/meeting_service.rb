@@ -31,8 +31,7 @@ class MeetingService
   def failure_message
     SlackResponse.new({
       failed: true,
-      pretext: "There was an error creating your Out of Office event. Check to see if your parameters are correct.",
-      title: "Out of Office Calendar"
+      text: "There was an error creating your Out of Office event. Check to see if your parameters are correct."
     })
   end
 
