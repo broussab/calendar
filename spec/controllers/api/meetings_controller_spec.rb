@@ -41,6 +41,8 @@ RSpec.describe API::MeetingsController, type: :controller do
       post :create, params: params, headers: headers
 
       expect(response).to be_unprocessable
+      body = JSON.parse(response.body)
+      expect(body['attachments'][0]['text']).to eq("There was an error creating your Out of Office event. Check to see if your parameters are correct.")
     end
   end
 
@@ -55,6 +57,7 @@ RSpec.describe API::MeetingsController, type: :controller do
       expect(body['attachments'][0]['title']).to eq("Out of Office Calendar Help")
       expect(body['attachments'][0]['text']).to eq("Just enter /ooo [reason, start time, end time] and your event will automatically be added to the Out of Office Calendar! Make sure the parameters are separated by commas and the times are in the format: MM-DD-YYYY HH:MM am/pm. For example: /ooo WFH, 03-27-2017 8:00 am, 03-27-2017 5:00 pm
       You can also see if an employee is in or out of the office today by entering /ooo @slack_name. For example: /ooo @alyssa")
+      expect(body['attachments'][0]['title_link']).to eq("https://cryptic-woodland-68868.herokuapp.com/instructions")
     end
   end
 

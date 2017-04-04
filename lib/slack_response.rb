@@ -1,5 +1,5 @@
 class SlackResponse
-  attr_reader :title, :text, :title_link, :image_url, :thumb_url, :footer, :footer_icon, :color
+  attr_reader :title, :text, :title_link, :image_url, :thumb_url, :footer, :footer_icon, :color, :pretext
 
   def initialize(params = {})
     @failed = params[:failed] || false
