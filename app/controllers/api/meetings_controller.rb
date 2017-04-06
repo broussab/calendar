@@ -9,6 +9,7 @@ class API::MeetingsController < ApplicationController
       render json: { errors: "Not today buddy." }, status: :unprocessable_entity
     end
   end
+  
   def set_access_control_headers
     headers['Access-Control-Allow-Origin'] = '*'
     headers['Access-Control-Allow-Methods'] = 'POST, GET, OPTIONS'
