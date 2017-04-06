@@ -1,0 +1,11 @@
+default: &default
+  verification_token: "abcd1234"
+
+development:
+  <<: *default
+
+test:
+  <<: *default
+
+production:
+  verification_token: <%= ENV["verification_token"] %>
