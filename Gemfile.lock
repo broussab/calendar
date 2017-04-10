@@ -76,6 +76,8 @@ GEM
     faraday_middleware (0.11.0.1)
       faraday (>= 0.7.4, < 1.0)
     ffi (1.9.18)
+    figaro (1.1.1)
+      thor (~> 0.14)
     gli (2.16.0)
     globalid (0.3.7)
       activesupport (>= 4.1.0)
@@ -210,7 +212,7 @@ GEM
     turbolinks-source (5.0.0)
     tzinfo (1.2.3)
       thread_safe (~> 0.1)
-    uglifier (3.1.13)
+    uglifier (3.2.0)
       execjs (>= 0.3.0, < 3)
     warden (1.2.7)
       rack (>= 1.0)
@@ -227,6 +229,7 @@ DEPENDENCIES
   devise
   factory_girl_rails (~> 4.0)
   faker
+  figaro
   jquery-rails
   listen
   pg

@@ -29,7 +29,6 @@ RSpec.describe API::MeetingsController, type: :controller do
     it 'should allow a post request with the correct token' do
       params[:text] = 'help'
       post :create, params: params, headers: headers
-
       expect(response).to be_success
     end
 
