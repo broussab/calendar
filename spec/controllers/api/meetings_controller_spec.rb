@@ -21,7 +21,27 @@ RSpec.describe API::MeetingsController, type: :controller do
   let(:params) do
     { format: :json,
       :text => 'a reason',
-      :user_name => 'alyssa' }
+      :user_name => 'alyssa',
+      :token => 'abcd1234' }
+  end
+
+  describe "verifies slack token" do
+    it 'should allow a post request with the correct token' do
+      params[:text] = 'help'
+      post :create, params: params, headers: headers
+      expect(response).to be_success
+    end
+
+    it 'should return an error if the token is not correct' do
+      params[:text] = 'help'
+      params[:token] = 'wrong'
+      post :create, params: params, headers: headers
+
+      expect(response).to be_unprocessable
+
+      body = JSON.parse(response.body)
+      expect(body['errors']).to eq("Not today buddy.")
+    end
   end
 
   describe "adding a meeting" do

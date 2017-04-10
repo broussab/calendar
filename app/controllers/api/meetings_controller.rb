@@ -1,8 +1,15 @@
 class API::MeetingsController < ApplicationController
   skip_before_action :verify_authenticity_token
   skip_before_action :authenticate_user!
+  before_action :verify_slack_token
   before_action :set_access_control_headers
 
+  def verify_slack_token
+    unless params[:token] == ENV["verification_token"]
+      render json: { errors: "Not today buddy." }, status: :unprocessable_entity
+    end
+  end
+  
   def set_access_control_headers
     headers['Access-Control-Allow-Origin'] = '*'
     headers['Access-Control-Allow-Methods'] = 'POST, GET, OPTIONS'

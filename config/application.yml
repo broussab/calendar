@@ -1,0 +1,8 @@
+default: &default
+  verification_token: "abcd1234"
+
+development:
+  <<: *default
+
+test:
+  <<: *default
