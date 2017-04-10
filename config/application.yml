@@ -6,6 +6,3 @@ development:
 
 test:
   <<: *default
-
-# production:
-#   verification_token: <%= ENV["verification_token"] %>
